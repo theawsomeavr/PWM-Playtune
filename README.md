@@ -16,7 +16,7 @@ Disadvanteges:
 
 1°- It only works with versions of the arduino IDE from 1.6.x and higher.
 
-2°- It only works on the arduino Uno (atmega328p).
+2°- It only works on the arduino Uno and arduino mega (atmega2560) (atmega328p).
 
 Thanks a lot to LenShustek and to Joe Marshall's for making this library possible
 Original playtune library:
