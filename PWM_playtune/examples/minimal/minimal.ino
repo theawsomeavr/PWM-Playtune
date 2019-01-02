@@ -21,13 +21,9 @@ PWM_Playtune pt;
 
 void setup() {
 
-
-
-
-
 pt.begin(); //initialize the timers
-//pt.set_volume(25);// set the volume between 0/100
-pt.enable_leds(4,5,6,7); // call this function for using leds and give them the pins where they are going to be
+pt.set_volume(50);//OPTIONAL: set the volume between 0/100, if not called the volume will be 100%
+pt.enable_leds(13,12,11,10); // OPTIONAL: call this function for using leds and give them the pins where they are going to be
 
 }
 
