@@ -61,21 +61,46 @@ byte poly[4];
 void PWM_Playtune::begin() 
 {
    pinMode(9, OUTPUT); 
+   #if (defined(ARDUINO_AVR_UNO) || \
+       defined(ARDUINO_AVR_DUEMILANOVE) || \
+       defined(__AVR_ATmega328__) || \
+       defined(__AVR_ATmega328P__) || \
+       defined(__AVR_ATmega328PB__))
 // Timer1 and 2 Clock Prescaler to : 1, set WGM22 to zero, and WGM12,13
 // for phase correct PCM
-  TCCR1B = (TCCR1B & 0b11100000) | 0b00001;
-  TCCR2B = (TCCR2B & 0b11110000) | 0b0001;
+  TCCR1B = 0b00000001;
+  TCCR2B = 0b00000001;
 
 // set it to clear compare match mode
 // on both pins, and phase correct PCM (WGM21 and WGM20)
-  TCCR1A = (TCCR1A &0b00001100)| 0b10100001;
-  TCCR2A = (TCCR2A &0b00001100)| 0b10100001;
+  TCCR1A = 0b10000001;
+  TCCR2A = 0b00000001;
 
 // set overflow interrupts enabled for timers 1 and 2
   TIMSK2 |= (1<<TOIE2);
   TIMSK1 |= (1<<TOIE1);
   //TIMSK0 |= (1<<TOIE0);
-  
+  #elif (defined(ARDUINO_AVR_MEGA) || \
+       defined(ARDUINO_AVR_MEGA1280) || \
+       defined(ARDUINO_AVR_MEGA2560) || \
+       defined(__AVR_ATmega1280__) || \
+       defined(__AVR_ATmega1281__) || \
+       defined(__AVR_ATmega2560__) || \
+       defined(__AVR_ATmega2561__))
+  TCCR1B = 0b00000001;
+  TCCR2B = 0b00000001;
+
+// set it to clear compare match mode
+// on both pins, and phase correct PCM (WGM21 and WGM20)
+  TCCR1A = 0b00000001;
+  TCCR2A = 0b00100001;
+
+// set overflow interrupts enabled for timers 1 and 2
+  TIMSK2 |= (1<<TOIE2);
+  TIMSK1 |= (1<<TOIE1);
+  #else
+	  unsuported MCU
+  #endif
 }
 
 // information about the current state of a single oscillator
@@ -247,8 +272,23 @@ ISR(TIMER1_OVF_vect)
   poly[0]=getByteLevel(valOut0);
   // write to pin 10
   poly[1]=getByteLevel(valOut1);
-
+     #if (defined(ARDUINO_AVR_UNO) || \
+       defined(ARDUINO_AVR_DUEMILANOVE) || \
+       defined(__AVR_ATmega328__) || \
+       defined(__AVR_ATmega328P__) || \
+       defined(__AVR_ATmega328PB__))
   OCR1A=(poly[0]+poly[1]+poly[2]+poly[3])/4;
+    #elif (defined(ARDUINO_AVR_MEGA) || \
+       defined(ARDUINO_AVR_MEGA1280) || \
+       defined(ARDUINO_AVR_MEGA2560) || \
+       defined(__AVR_ATmega1280__) || \
+       defined(__AVR_ATmega1281__) || \
+       defined(__AVR_ATmega2560__) || \
+       defined(__AVR_ATmega2561__))
+   OCR2B=(poly[0]+poly[1]+poly[2]+poly[3])/4;
+   #else 
+	   unsuported MCU
+   #endif
 }
 // interrupt for timer 2 overflow (pins 11 and 3)
 // in this, we set the next value for the PWM for those pins
