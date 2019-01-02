@@ -19,5 +19,8 @@ Disadvanteges:
 2°- It only works on the arduino Uno (atmega328p).
 
 Thanks a lot to LenShustek and to Joe Marshall's for making this library possible
-Original playtune library: https://github.com/LenShustek/arduino-playtune
-Arduino music using Direct Digital Synthesis:http://www.cs.nott.ac.uk/~pszjm2/projects/other/Arduino_music_using_Direct_Digital_Synthesis.html
+Original playtune library:
+https://github.com/LenShustek/arduino-playtune
+
+Arduino music using Direct Digital Synthesis:
+http://www.cs.nott.ac.uk/~pszjm2/projects/other/Arduino_music_using_Direct_Digital_Synthesis.html
